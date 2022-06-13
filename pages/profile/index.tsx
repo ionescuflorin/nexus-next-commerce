@@ -1,21 +1,16 @@
-import { useState, useEffect } from 'react';
+import useSWR from 'swr';
+
+//@ts-ignore
+const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 function Profile() {
-  const [data, setData] = useState([]);
-  const [isLoading, setLoading] = useState(false);
+  const { data, error } = useSWR(
+    'https://jsonplaceholder.typicode.com/posts/',
+    fetcher
+  );
 
-  useEffect(() => {
-    setLoading(true);
-    fetch('https://jsonplaceholder.typicode.com/posts/')
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-        setLoading(false);
-      });
-  }, []);
-
-  if (isLoading) return <p>Loading...</p>;
-  if (!data) return <p>No profile data</p>;
+  if (error) return <div>Failed to load</div>;
+  if (!data) return <div>Loading...</div>;
 
   return (
     <ul>
@@ -25,5 +20,4 @@ function Profile() {
     </ul>
   );
 }
-
 export default Profile;
