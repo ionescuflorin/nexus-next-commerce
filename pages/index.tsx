@@ -1,7 +1,10 @@
-import type { NextPage } from 'next';
+//import type { NextPage } from 'next';
 import Head from 'next/head';
+import { ReactElement } from 'react';
+import Layout from '../components/layout';
+import NestedLayout from '../components/nested-layout';
 
-const Home: NextPage = () => {
+export default function Home() {
   return (
     <div>
       <Head>
@@ -13,6 +16,12 @@ const Home: NextPage = () => {
       <main>HomePage</main>
     </div>
   );
-};
+}
 
-export default Home;
+Home.getLayout = function getLayout(page: ReactElement) {
+  return (
+    <Layout>
+      <NestedLayout>{page}</NestedLayout>
+    </Layout>
+  );
+};
